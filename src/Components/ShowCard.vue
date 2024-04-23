@@ -20,7 +20,7 @@
     background-color: white;
     padding: 20px;
     width: 30%;
-    margin: auto;
+    margin:0px auto;
     top: 200px;
     border-radius: 10px;
     z-index: 2;
@@ -47,7 +47,7 @@
 
 <script>
 export default {
-    props: ['showModel','maxValue','timeDiff'],
+    props: ['showModel','maxValue'],
 
 };
 </script>
