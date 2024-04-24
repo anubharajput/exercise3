@@ -14,7 +14,7 @@ export default {
     methods: {
         changeBackground() {
             this.storeTime = setTimeout(() => {
-                this.backdrop = !this.backdrop;
+                this.backdrop=!this.backdrop;
                 this.startTime = Date.now();
                 this.isGameStopped = true;
             }, Math.floor(Math.random() * (10000 - 3000 + 1)) + 3000);
@@ -42,6 +42,9 @@ export default {
         },
         updateIsGameStopped(value) {
             this.isGameStopped = value;
+        },
+        updateBackdrop(value){
+            this.backdrop=value;
         }
 
     },
@@ -58,7 +61,7 @@ export default {
             {{ buttonType }}
         </div>
         <Result :buttonType="buttonType" :reactionTime="reactionTime" :isGameStopped="isGameStopped"
-            @update:isGameStopped="updateIsGameStopped"></Result>
+            @update:isGameStopped="updateIsGameStopped" :backdrop="backdrop" @update:backdrop="updateBackdrop"></Result>
     </div>
 </template>
 
@@ -84,7 +87,7 @@ export default {
     width: 50%;
     margin: 0px auto;
     margin-top: 50px;
-    height: 250px;
+    height: 180px;
     border-radius: 10px;
     color: white;
     display: flex;

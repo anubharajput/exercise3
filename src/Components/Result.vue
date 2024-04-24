@@ -1,8 +1,7 @@
 <template>
   <div class="container">
     <div v-if="scoreMessage">
-      Your reaction time was <span>{{ hours }}:</span>
-      <span>{{ minutes }}:</span><span>{{ seconds }}:</span>{{ milisec }}
+      Your reaction time was {{ scoreMessage }} seconds
     </div>
     <div v-if="instructionMessage">{{ instructionMessage }}</div>
     <div v-if="highScoreMessage">{{ highScoreMessage }}</div>
@@ -25,20 +24,8 @@ export default {
       arr: []
     }
   },
-  props: ["buttonType", "reactionTime", "isGameStopped"],
+  props: ["buttonType", "reactionTime", "isGameStopped","backdrop"],
   methods: {
-    getUnitsFromTime(ms) {
-      let totalSeconds = Math.floor(ms / 1000);
-      let hr = Math.floor(totalSeconds / 3600);
-      totalSeconds %= 3600;
-      let min = Math.floor(totalSeconds / 60);
-      let sec = totalSeconds % 60;
-      let milisecond = ms % 1000;
-      hr = hr < 10 ? `0${hr}` : `hr`;
-      min = min < 10 ? `0${min}` : `min`;
-      sec = sec < 10 ? `0${sec}` : `sec`;
-      return { hr, min, sec, milisecond };
-    },
     getHightScore() {
       this.CurrentScore = this.reactionTime
       if (this.highScore === null) {
@@ -50,6 +37,7 @@ export default {
         this.highScore = this.CurrentScore;
       }
       this.$emit("update:isGameStopped", false);
+      this.$emit("update:backdrop",true);
     }
   },
   updated() {
@@ -61,17 +49,9 @@ export default {
       this.instructionMessage = `Too quick... Try again!`;
     } else if (this.reactionTime && this.buttonType === "Go") {
       this.getHightScore();
-      const { hr, min, sec, milisecond } = this.getUnitsFromTime(this.CurrentScore);
-      this.scoreMessage = true;
-      this.hours = hr;
-      this.minutes = min;
-      this.seconds = sec;
-      this.milisec = milisecond;
+      this.scoreMessage = this.CurrentScore/1000;
       this.instructionMessage = "Click Go to test your reaction time!";
       this.highScoreMessage = `Your High Score is ${this.highScore / 1000} seconds`;
-    }
-    if (this.reactionTime) {
-      this.getUnitsFromTime(this.reactionTime);
     }
   },
 };
@@ -86,5 +66,6 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  font-size:20px;
 }
 </style>
