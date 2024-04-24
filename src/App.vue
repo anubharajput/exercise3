@@ -1,32 +1,27 @@
 <script>
 import Result from './Components/Result.vue';
+import GameBtn from './Components/GameBtn.vue';
 export default {
     data() {
         return {
-            showBtn: true,
-            backdrop: true,
+            changeBackgroundColor: true,
             startTime: null,
             reactionTime: null,
-            buttonType: "Go",
-            isGameStopped: false
+            buttonLabel: "Go",
+            isGameStopped: false,
+            currentBackgroundColor:""
         }
     },
     methods: {
-        changeBackground() {
-            this.storeTime = setTimeout(() => {
-                this.backdrop=!this.backdrop;
+        getReactionTime() {
+            console.log("cvb")
+            if (this.buttonLabel === "Stop") {
+                this.isGameStopped = false;
+                this.currentBackgroundColor = setTimeout(() => {
+                this.changeBackgroundColor = !this.changeBackgroundColor;
                 this.startTime = Date.now();
                 this.isGameStopped = true;
             }, Math.floor(Math.random() * (10000 - 3000 + 1)) + 3000);
-        },
-        getReactionTime() {
-            if (this.showBtn)
-                this.buttonType = "Go";
-            else
-                this.buttonType = "Stop"
-            if (this.buttonType === "Stop") {
-                this.isGameStopped = false;
-                this.changeBackground();
             }
             else {
                 if (this.startTime !== null) {
@@ -34,7 +29,7 @@ export default {
                     this.startTime = null;
                 }
                 if (this.isGameStopped === false) {
-                    clearTimeout(this.storeTime);
+                    clearTimeout(this.currentBackgroundColor);
                     this.startTime = null;
                     this.reactionTime = null;
                 }
@@ -43,25 +38,29 @@ export default {
         updateIsGameStopped(value) {
             this.isGameStopped = value;
         },
-        updateBackdrop(value){
-            this.backdrop=value;
+        updatechangeBackgroundColor(value) {
+            this.changeBackgroundColor = value;
+        },
+        updateButtonLabel(value)
+        {
+            this.buttonLabel=value;
         }
 
     },
     components: {
         Result,
+        GameBtn
     }
 }
 </script>
 
 <template>
-    <div class="main-container" :class="{ 'background-color-blue': backdrop, 'background-color-green': !backdrop }">
-        <div :class="[buttonType === 'Stop' ? 'card-red' : 'card-green']" id="card1"
-            @click="showBtn = !showBtn, getReactionTime()">
-            {{ buttonType }}
-        </div>
-        <Result :buttonType="buttonType" :reactionTime="reactionTime" :isGameStopped="isGameStopped"
-            @update:isGameStopped="updateIsGameStopped" :backdrop="backdrop" @update:backdrop="updateBackdrop"></Result>
+    <div class="main-container"
+        :class="{ 'background-color-blue': changeBackgroundColor, 'background-color-green': !changeBackgroundColor }">
+        <GameBtn :buttonLabel="buttonLabel" @update:buttonLabel="updateButtonLabel" @click="getReactionTime"/>
+        <Result :buttonLabel="buttonLabel" :reactionTime="reactionTime" :isGameStopped="isGameStopped"
+            @update:isGameStopped="updateIsGameStopped" :changeBackgroundColor="changeBackgroundColor"
+            @update:changeBackgroundColor="updatechangeBackgroundColor"></Result>
     </div>
 </template>
 
@@ -73,29 +72,6 @@ export default {
     font-family: sans-serif;
     width: 100%;
     height: 100vh;
-}
-
-.card-green {
-    background-color: rgba(86, 223, 86, 0.679);
-}
-
-.card-red {
-    background-color: rgba(251, 41, 41, 0.768);
-}
-
-#card1 {
-    width: 50%;
-    margin: 0px auto;
-    margin-top: 50px;
-    height: 180px;
-    border-radius: 10px;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2rem;
-    cursor: pointer;
-    font-size: 3rem;
 }
 
 .background-color-green {
