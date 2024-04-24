@@ -1,8 +1,8 @@
 <template>
   <div class="container">
     <div v-if="scoreMessage">
-      Your reaction time was <span v-if="hours">{{ hours }} hour </span>
-      <span v-if="minutes">{{ minutes }} min </span> <span v-if="seconds"> {{ seconds }} seconds</span> 0.{{ milisec }}
+      Your reaction time was <span>{{ hours }}:</span>
+      <span>{{ minutes }}:</span><span>{{ seconds }}:</span>{{ milisec }}
     </div>
     <div v-if="instructionMessage">{{ instructionMessage }}</div>
     <div v-if="highScoreMessage">{{ highScoreMessage }}</div>
@@ -10,7 +10,6 @@
 </template>
 
 <script>
-
 export default {
   data() {
     return {
@@ -30,18 +29,20 @@ export default {
   methods: {
     getUnitsFromTime(ms) {
       let totalSeconds = Math.floor(ms / 1000);
-      const hr = Math.floor(totalSeconds / 3600);
+      let hr = Math.floor(totalSeconds / 3600);
       totalSeconds %= 3600;
-      const min = Math.floor(totalSeconds / 60);
-      const sec = totalSeconds % 60;
-      const milisecond = ms % 1000;
-
+      let min = Math.floor(totalSeconds / 60);
+      let sec = totalSeconds % 60;
+      let milisecond = ms % 1000;
+      hr = hr < 10 ? `0${hr}` : `hr`;
+      min = min < 10 ? `0${min}` : `min`;
+      sec = sec < 10 ? `0${sec}` : `sec`;
       return { hr, min, sec, milisecond };
     },
     getHightScore() {
       this.CurrentScore = this.reactionTime
-      if (this.arr.length === 0) {
-        this.highScore = this.reactionTime;
+      if (this.highScore === null) {
+        this.highScore = this.CurrentScore;
         this.arr.push(this.reactionTime);
       }
       else if (this.highScore > this.CurrentScore) {
@@ -67,7 +68,7 @@ export default {
       this.seconds = sec;
       this.milisec = milisecond;
       this.instructionMessage = "Click Go to test your reaction time!";
-      this.highScoreMessage = `Your High Score is 0.${this.highScore}`;
+      this.highScoreMessage = `Your High Score is ${this.highScore / 1000} seconds`;
     }
     if (this.reactionTime) {
       this.getUnitsFromTime(this.reactionTime);
