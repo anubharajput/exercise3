@@ -12,7 +12,6 @@ export default {
       //to check game is on running stage or paused so we handle the setTimeout function
       isGameStarted: false,
       timeoutRef: "",
-      recentScore: null,
       highScore: null,
     };
   },
@@ -33,22 +32,15 @@ export default {
           this.userStartTime = null;
           this.userStopTime = null;
         }
-      }//to get recent the maximum score
-      this.getHighScore();
+      }//to get maximum score
+      if (this.highScore === null || this.userStopTime < this.highScore)
+        this.highScore = this.userStopTime;
+      this.isGameStarted = false;
+      this.isBackgroundcolorBlue = true;
     },
     updateIsStartBtn(value) {
       this.isStartBtn = value;
     },
-    getHighScore() {
-      this.recentScore = this.userStopTime;
-      if (this.highScore === null) {
-        this.highScore = this.recentScore;
-      } else if (this.highScore > this.recentScore) {
-        this.highScore = this.recentScore;
-      }
-      this.isGameStarted = false;
-      this.isBackgroundcolorBlue = true;
-    }
   },
   components: {
     Result,
@@ -60,7 +52,7 @@ export default {
 <template>
   <div class="main-container" :class="[isBackgroundcolorBlue ? 'background-color-blue' : 'background-color-green']">
     <GameBtn :isStartBtn="isStartBtn" @update:isStartBtn="updateIsStartBtn" @click="handleGoStopBtn" />
-    <Result :isStartBtn="isStartBtn" :recentScore="recentScore" :highScore="highScore">
+    <Result :isStartBtn="isStartBtn" :userStopTime="userStopTime" :highScore="highScore">
     </Result>
   </div>
 </template>
