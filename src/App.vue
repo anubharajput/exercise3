@@ -4,10 +4,10 @@
   export default {
     data() {
       return {
-        isColorFlag: true,
+        isColorBlue: true,
         userStartTime: null,
         userStopTime: null,
-        buttonLabel: "Go",
+        isStartBtn:true,
         isGameStopped: false,
         timeoutRef: "",
         currentScore: null,
@@ -16,13 +16,12 @@
     },
     methods: {
       handleGoStopBtn() {
-        if (this.buttonLabel === "Stop") {
-          this.isGameStopped = false;
+        if (!this.isStartBtn) {
           this.timeoutRef = setTimeout(() => {
-            this.isColorFlag = !this.isColorFlag;
+            this.isColorBlue = !this.isColorBlue;
             this.userStartTime = Date.now();
             this.isGameStopped = true;
-          }, Math.floor(Math.random() * (10000 - 3000 + 1)) + 3000);
+          }, 5000);
         } else {
           if (this.userStartTime !== null) {
             this.userStopTime = Date.now() - this.userStartTime;
@@ -36,8 +35,8 @@
         }
        this.getHighScore();
       },
-      updateButtonLabel(value) {
-        this.buttonLabel = value;
+      updateIsStartBtn(value) {
+        this.isStartBtn = value;
       },
       getHighScore(){
         this.currentScore = this.userStopTime;
@@ -47,7 +46,7 @@
           this.highScore = this.currentScore;
         }
         this.isGameStopped = false;
-        this.isColorFlag = true;
+        this.isColorBlue = true;
       }
     },
     components: {
@@ -60,16 +59,13 @@
 <template>
   <div
     class="main-container"
-    :class="{
-      'background-color-blue':isColorFlag,
-      'background-color-green': !isColorFlag,
-    }">
+    :class="[isColorBlue?'background-color-blue':'background-color-green']">
     <GameBtn
-      :buttonLabel="buttonLabel"
-      @update:buttonLabel="updateButtonLabel"
+      :isStartBtn="isStartBtn"
+      @update:isStartBtn="updateIsStartBtn"
       @click="handleGoStopBtn" />
     <Result
-      :buttonLabel="buttonLabel"
+      :isStartBtn="isStartBtn"
       :currentScore="currentScore"
       :highScore="highScore">
     </Result>

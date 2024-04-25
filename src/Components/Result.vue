@@ -17,15 +17,15 @@ export default {
       highScoreMessage: null,
     }
   },
-  props: ["buttonLabel", "currentScore","highScore"],
+  props: ["isStartBtn", "currentScore","highScore"],
   updated() {
-    if (this.buttonLabel === "Stop") {
+    if (!this.isStartBtn) {
       this.instructionMessage = "Pay attention. Click stop when color changes";
       this.scoreMessage = null;
       this.highScoreMessage = null;
-    } else if (this.currentScore === null && this.buttonLabel === "Go") {
+    } else if (this.currentScore === null && this.isStartBtn) {
       this.instructionMessage = `Too quick... Try again!`;
-    } else if (this.currentScore && this.buttonLabel === "Go") {
+    } else if (this.currentScore && this.isStartBtn) {
       this.scoreMessage = this.currentScore/1000;
       this.instructionMessage = "Click Go to test your reaction time!";
       this.highScoreMessage = `Your High Score is ${this.highScore / 1000} seconds`;

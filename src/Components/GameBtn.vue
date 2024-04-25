@@ -1,19 +1,25 @@
 <template>
     <button
-      :class="[buttonLabel === 'Stop' ? 'card-red' : 'card-green']"
+      :class="[isStartBtn ? 'card-green' : 'card-red']"
       id="card1"
       @click="toggleBtn">
-      {{ buttonLabel }}
+      {{ buttonText }}
     </button>
   </template>
   
   <script>
     export default {
-      props: ["buttonLabel"],
+      data(){
+        return{
+          buttonText:"Go"
+        }
+      },
+      props: ["isStartBtn"],
       methods: {
         toggleBtn() {
-          if (this.buttonLabel==="Stop") this.$emit("update:buttonLabel", "Go");
-          else this.$emit("update:buttonLabel", "Stop");
+          this.$emit("update:isStartBtn", !this.isStartBtn);
+          if (this.isStartBtn) this.buttonText="stop"
+          else  this.buttonText="Go"
         },
       },
     };
