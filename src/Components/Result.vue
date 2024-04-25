@@ -17,16 +17,16 @@ export default {
       highScoreMessage: null,
     }
   },
-  props: ["isStartBtn", "currentScore","highScore"],
+  props: ["isStartBtn", "recentScore", "highScore"],
   updated() {
     if (!this.isStartBtn) {
       this.instructionMessage = "Pay attention. Click stop when color changes";
       this.scoreMessage = null;
       this.highScoreMessage = null;
-    } else if (this.currentScore === null && this.isStartBtn) {
+    } else if (this.recentScore === null && this.isStartBtn) {
       this.instructionMessage = `Too quick... Try again!`;
-    } else if (this.currentScore && this.isStartBtn) {
-      this.scoreMessage = this.currentScore/1000;
+    } else if (this.recentScore && this.isStartBtn) {
+      this.scoreMessage = this.recentScore / 1000;
       this.instructionMessage = "Click Go to test your reaction time!";
       this.highScoreMessage = `Your High Score is ${this.highScore / 1000} seconds`;
     }
@@ -43,6 +43,6 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  font-size:20px;
+  font-size: 20px;
 }
 </style>
