@@ -4,7 +4,7 @@
   export default {
     data() {
       return {
-        isColorBlue: true,
+        isBackgroundcolorBlue: true,
         userStartTime: null,
         userStopTime: null,
         isStartBtn:true,
@@ -18,7 +18,7 @@
       handleGoStopBtn() {
         if (!this.isStartBtn) {
           this.timeoutRef = setTimeout(() => {
-            this.isColorBlue = !this.isColorBlue;
+            this.isBackgroundcolorBlue = !this.isBackgroundcolorBlue;
             this.userStartTime = Date.now();
             this.isGameStopped = true;
           }, 5000);
@@ -46,7 +46,7 @@
           this.highScore = this.currentScore;
         }
         this.isGameStopped = false;
-        this.isColorBlue = true;
+        this.isBackgroundcolorBlue = true;
       }
     },
     components: {
@@ -59,7 +59,7 @@
 <template>
   <div
     class="main-container"
-    :class="[isColorBlue?'background-color-blue':'background-color-green']">
+    :class="[isBackgroundcolorBlue?'background-color-blue':'background-color-green']">
     <GameBtn
       :isStartBtn="isStartBtn"
       @update:isStartBtn="updateIsStartBtn"
