@@ -17,32 +17,16 @@ export default {
       highScoreMessage: null,
     }
   },
-  props: ["buttonLabel", "reactionTime", "isGameStopped","changeBackgroundColor"],
-  methods: {
-    getHightScore() {
-      this.CurrentScore = this.reactionTime
-      if (this.highScore === null) {
-        this.highScore = this.CurrentScore;
-        this.arr.push(this.reactionTime);
-      }
-      else if (this.highScore > this.CurrentScore) {
-        this.arr.push(this.CurrentScore);
-        this.highScore = this.CurrentScore;
-      }
-      this.$emit("update:isGameStopped", false);
-      this.$emit("update:changeBackgroundColor",true);
-    }
-  },
+  props: ["buttonLabel", "currentScore","highScore"],
   updated() {
     if (this.buttonLabel === "Stop") {
       this.instructionMessage = "Pay attention. Click stop when color changes";
       this.scoreMessage = null;
       this.highScoreMessage = null;
-    } else if (this.reactionTime === null && this.buttonLabel === "Go") {
+    } else if (this.currentScore === null && this.buttonLabel === "Go") {
       this.instructionMessage = `Too quick... Try again!`;
-    } else if (this.reactionTime && this.buttonLabel === "Go") {
-      this.getHightScore();
-      this.scoreMessage = this.CurrentScore/1000;
+    } else if (this.currentScore && this.buttonLabel === "Go") {
+      this.scoreMessage = this.currentScore/1000;
       this.instructionMessage = "Click Go to test your reaction time!";
       this.highScoreMessage = `Your High Score is ${this.highScore / 1000} seconds`;
     }
