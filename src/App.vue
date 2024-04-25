@@ -4,22 +4,22 @@
   export default {
     data() {
       return {
-        changeBackgroundColor: true,
-        UserStartTime: null,
+        isColorFlag: true,
+        userStartTime: null,
         userStopTime: null,
         buttonLabel: "Go",
         isGameStopped: false,
-        currentBackgroundColor: "",
+        timeoutRef: "",
         currentScore: null,
         highScore: null,
       };
     },
     methods: {
-      handleClick() {
+      handleGoStopBtn() {
         if (this.buttonLabel === "Stop") {
           this.isGameStopped = false;
-          this.currentBackgroundColor = setTimeout(() => {
-            this.changeBackgroundColor = !this.changeBackgroundColor;
+          this.timeoutRef = setTimeout(() => {
+            this.isColorFlag = !this.isColorFlag;
             this.userStartTime = Date.now();
             this.isGameStopped = true;
           }, Math.floor(Math.random() * (10000 - 3000 + 1)) + 3000);
@@ -29,7 +29,7 @@
             this.userStartTime = null;
           }
           if (this.isGameStopped === false) {
-            clearTimeout(this.currentBackgroundColor);
+            clearTimeout(this.timeoutRef);
             this.userStartTime = null;
             this.userStopTime = null;
           }
@@ -47,7 +47,7 @@
           this.highScore = this.currentScore;
         }
         this.isGameStopped = false;
-        this.changeBackgroundColor = true;
+        this.isColorFlag = true;
       }
     },
     components: {
@@ -61,13 +61,13 @@
   <div
     class="main-container"
     :class="{
-      'background-color-blue': changeBackgroundColor,
-      'background-color-green': !changeBackgroundColor,
+      'background-color-blue':isColorFlag,
+      'background-color-green': !isColorFlag,
     }">
     <GameBtn
       :buttonLabel="buttonLabel"
       @update:buttonLabel="updateButtonLabel"
-      @click="handleClick" />
+      @click="handleGoStopBtn" />
     <Result
       :buttonLabel="buttonLabel"
       :currentScore="currentScore"
